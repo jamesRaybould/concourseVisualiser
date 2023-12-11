@@ -45,7 +45,7 @@ var configTmpl = `
 
 func (config Config) String() string {
 	var buf bytes.Buffer
-	
+
 	parsedTemplate, _ := template.New("task").Parse(configTmpl)
 	parsedTemplate.Execute(&buf, config)
 	return buf.String()

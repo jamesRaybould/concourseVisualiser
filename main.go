@@ -151,7 +151,7 @@ func main() {
 	outputFile := flag.String("output", "pipeline.puml", "outfile file, filename to output the results")
 
 	flag.Parse()
-	
+
 	pipeline, err := ParsePipeline(*inputFile)
 	if err != nil {
 		log.Fatal(err)
@@ -210,6 +210,5 @@ rectangle "%s" as %s #F5CDA3 {
 		f.WriteString("@enduml\n")
 	}
 
-	
 	f.Sync()
 }
