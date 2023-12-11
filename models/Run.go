@@ -7,7 +7,7 @@ import (
 
 type Run struct {
 	Args []string
-	Dir string
+	Dir  string
 	Path string
 }
 
@@ -21,7 +21,7 @@ var runTmpl = `
 		{{ end }}
 		{{- end -}}`
 
-func (run Run) String() (string){
+func (run Run) String() string {
 	var buf bytes.Buffer
 	parsedTemplate, _ := template.New("run").Parse(runTmpl)
 	parsedTemplate.Execute(&buf, run)

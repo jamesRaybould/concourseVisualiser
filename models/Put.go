@@ -6,13 +6,13 @@ import (
 )
 
 type Put struct {
-	Key int
-	Jobname string
-	Put     string
-	Inputs  string
-	No_get  bool
+	Key      int
+	Jobname  string
+	Put      string
+	Inputs   string
+	No_get   bool
 	Resource string
-	Params  Params
+	Params   map[string]string
 }
 
 func (put Put) String() string {
@@ -22,7 +22,7 @@ func (put Put) String() string {
 		name: %s
 		inputs: %s
 		no_get: %t
-	}`, put.Put, put.Jobname, put.EscapedName(), put.Key,put.Resource, put.Put, put.Inputs, put.No_get)
+	}`, put.Put, put.Jobname, put.EscapedName(), put.Key, put.Resource, put.Put, put.Inputs, put.No_get)
 }
 
 func (put Put) EscapedName() string {

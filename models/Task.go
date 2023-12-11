@@ -6,14 +6,13 @@ import (
 )
 
 type Task struct {
-	Jobname string
-	Task    string
-	Image   string
+	Jobname    string
+	Task       string
+	Image      string
 	Privileged bool
-	Timeout string
-	Attempts int
-	Config  Config
-	
+	Timeout    string
+	Attempts   int
+	Config     Config
 }
 
 func (task Task) EscapedName() string {

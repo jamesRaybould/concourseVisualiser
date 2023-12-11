@@ -6,11 +6,10 @@ import (
 )
 
 type LoadVar struct {
-	Key int
-	Jobname string
-	Load_var     string
-	File  string
-
+	Key      int
+	Jobname  string
+	Load_var string
+	File     string
 }
 
 func (loadVar LoadVar) String() string {
