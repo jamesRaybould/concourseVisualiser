@@ -28,6 +28,16 @@ type InParallel struct {
 	Key        int
 }
 
+type Do struct {
+	Do []map[string]interface{} `mapstructure:"do"`
+	Key        int
+}
+
+type Try struct {
+	Try map[string]interface{} `mapstructure:"try"`
+	Key        int
+}
+
 func ParsePipeline(pipelineFile string) (*Pipeline, error) {
 	// Read the Concourse CI pipeline YAML file
 	file, err := os.Open(pipelineFile)
@@ -111,7 +121,7 @@ func parseTasks(key int, task map[string]interface{}, jobName string, jobOrder *
 		if err != nil {
 			log.Fatal(err)
 		}
-		f.WriteString(fmt.Sprintf("\n\trectangle in_parallel_%s_%d #47a025 [\n\t== In Parallel\n\t{{\n\tskinparam backgroundcolor transparent", jobName, key))
+		f.WriteString(fmt.Sprintf("\n\trectangle in_parallel_%s_%d #D9C2F0 [\n\t== In Parallel\n\t{{\n\tskinparam backgroundcolor transparent", jobName, key))
 
 		innerJobOrder := []string{}
 
@@ -130,6 +140,51 @@ func parseTasks(key int, task map[string]interface{}, jobName string, jobOrder *
 		}
 		*jobOrder = append(*jobOrder, fmt.Sprintf("in_parallel_%s_%d", jobName, key))
 		f.WriteString("\n\t}}\n\t]")
+	}
+
+	if task["do"] != nil {
+		var result Do
+		mapstructure.Decode(task, &result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		f.WriteString(fmt.Sprintf("\n\trectangle do_%s_%d #C5C4F7 [\n\t== Do\n\t{{\n\tskinparam backgroundcolor transparent", jobName, key))
+
+		innerJobOrder := []string{}
+
+		for innerKey, innerTask := range result.Do {
+			parseTasks(innerKey, innerTask, jobName, &innerJobOrder, err, f)
+		}
+		
+		for key := range innerJobOrder {
+			if (key + 1) == len(innerJobOrder) {
+				f.WriteString("\n")
+				break
+			}
+
+			f.WriteString(fmt.Sprintf(`
+	%s --> %s`, innerJobOrder[key], innerJobOrder[key+1]))
+		}
+
+		*jobOrder = append(*jobOrder, fmt.Sprintf("do_%s_%d", jobName, key))
+		f.WriteString("\n\t}}\n\t]")
+	}
+
+	if task["try"] != nil {
+		var result Try
+		mapstructure.Decode(task, &result)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		f.WriteString(fmt.Sprintf("\n\trectangle try_%s_%d #AFC7F5 [\n\t== Try\n\t{{\n\tskinparam backgroundcolor transparent", jobName, key))
+
+		parseTasks(0, result.Try, jobName, nil, err, f)
+
+		f.WriteString("\n\t}}\n\t]")
+		if jobOrder != nil {
+			*jobOrder = append(*jobOrder, fmt.Sprintf("try_%s_%d", jobName, key))
+		}
 	}
 
 	if task["set_pipeline"] != nil {
@@ -190,10 +245,10 @@ allowmixing
 		jobOrder := []string{}
 		escapedJobName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(job.Name, "-", "_"), "((", "_"), "))", "_")
 		f.WriteString(fmt.Sprintf(`
-rectangle "%s" as %s #F5CDA3 {
+rectangle "%s" as %s #F5F6F8 {
 `, job.Name, escapedJobName))
 
-		for key, task := range job.Plan {
+		for key, task := range job.Plan {			
 			parseTasks(key, task, escapedJobName, &jobOrder, err, f)
 		}
 

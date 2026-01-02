@@ -21,7 +21,7 @@ func (task Task) EscapedName() string {
 
 func (task Task) String() string {
 	return fmt.Sprintf(`
-	object "%s" as %s_%s #e8871e {
+	object "%s" as %s_%s #B7E3C2 {
 		image: %s
 		privileged: %t
 		config:

@@ -17,7 +17,7 @@ type Put struct {
 
 func (put Put) String() string {
 	return fmt.Sprintf(`
-	object "%s" as put_%s_%s_%d #CB67B9 {
+	object "%s" as put_%s_%s_%d #F7E8A6 {
 		resource: %s
 		name: %s
 		inputs: %s

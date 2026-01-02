@@ -13,7 +13,7 @@ type Get struct {
 
 func (get Get) String() string {
 	return fmt.Sprintf(`
-	object "get-%s" as get_%s_%s #d5e68d {
+	object "get-%s" as get_%s_%s #CDEAF7 {
 		get: %s
 		trigger: %t
 	}

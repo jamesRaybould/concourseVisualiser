@@ -14,7 +14,7 @@ type LoadVar struct {
 
 func (loadVar LoadVar) String() string {
 	return fmt.Sprintf(`
-	object "%s" as load_var_%s_%s_%d #AACA2B {
+	object "%s" as load_var_%s_%s_%d #E2E2E2 {
 		file: %s
 	}`, loadVar.Load_var, loadVar.Jobname, loadVar.EscapedName(), loadVar.Key, loadVar.File)
 }
